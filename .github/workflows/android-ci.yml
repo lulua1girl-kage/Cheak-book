@@ -31,6 +31,14 @@ jobs:
         with:
           packages: platform-tools platforms;android-35 build-tools;35.0.0
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Train and evaluate local intent model
+        run: python ml/train_intent_model.py
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
