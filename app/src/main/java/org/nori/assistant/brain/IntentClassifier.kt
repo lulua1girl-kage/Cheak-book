@@ -23,8 +23,10 @@ class IntentClassifier {
         val matches = patterns.flatMap { (intent, terms) ->
             terms.filter { term -> normalized.contains(term) }.map { intent to it }
         }
-        if (matches.size != 1) return IntentResult(NoriIntent.UNKNOWN, 0.25f)
-        val (intent, term) = matches.single()
+        val distinctIntents = matches.map { it.first }.distinct()
+        if (distinctIntents.size != 1) return IntentResult(NoriIntent.UNKNOWN, 0.25f)
+        val intent = distinctIntents.single()
+        val term = matches.first { it.first == intent }.second
         val confidence = if (normalized == term) 0.95f else 0.72f
         return IntentResult(intent, confidence, term)
     }
