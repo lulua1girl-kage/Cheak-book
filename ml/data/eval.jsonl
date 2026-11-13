@@ -12,3 +12,7 @@
 {"text":"maybe later","intent":"UNKNOWN"}
 {"text":"blah blah","intent":"UNKNOWN"}
 {"text":"what's up","intent":"UNKNOWN"}
+{"text":"tell me a joke","intent":"UNKNOWN"}
+{"text":"what is the capital of france","intent":"UNKNOWN"}
+{"text":"how does a refrigerator work","intent":"UNKNOWN"}
+{"text":"the sky looks blue today","intent":"UNKNOWN"}
