@@ -1,6 +1,5 @@
 package org.nori.assistant.voice
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -45,7 +44,7 @@ class AndroidVoiceController(
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
             SpeechRecognizer.isOnDeviceRecognitionAvailable(appContext)
 
-    fun startListening(activity: Activity) {
+    fun startListening() {
         if (!supportsOnDeviceRecognition()) {
             onStatus("Offline speech recognition is not available on this device. You can type instead.")
             return
