@@ -1,0 +1,14 @@
+{"text":"hello there","intent":"GREETING"}
+{"text":"good day nori","intent":"GREETING"}
+{"text":"help me revise biology","intent":"STUDY_HELP"}
+{"text":"explain chemistry to me","intent":"STUDY_HELP"}
+{"text":"add this to my tasks","intent":"TASK_MANAGEMENT"}
+{"text":"show the task list","intent":"TASK_MANAGEMENT"}
+{"text":"I am exhausted today","intent":"CHECK_IN"}
+{"text":"record how I slept","intent":"CHECK_IN"}
+{"text":"what is in my saved memory","intent":"MEMORY"}
+{"text":"please erase the chat log","intent":"MEMORY"}
+{"text":"do something unusual","intent":"UNKNOWN"}
+{"text":"maybe later","intent":"UNKNOWN"}
+{"text":"blah blah","intent":"UNKNOWN"}
+{"text":"what's up","intent":"UNKNOWN"}
