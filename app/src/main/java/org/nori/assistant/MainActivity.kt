@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
 }
 
 private enum class Screen(val label: String) {
-    HOME("Home"), CHECK_IN("Check-in"), TASKS("Tasks"), AUDIT("Audit")
+    HOME("Home"), CHECK_IN("Check-in"), TASKS("Tasks"), AUDIT("Audit"), CHAT("Nori")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,6 +69,7 @@ private fun NoriRoot(vm: NoriViewModel = viewModel()) {
                 Screen.CHECK_IN -> CheckInScreen(vm)
                 Screen.TASKS -> TasksScreen(vm)
                 Screen.AUDIT -> AuditScreen(vm)
+                Screen.CHAT -> ChatScreen(vm)
             }
         }
     }
@@ -185,5 +186,45 @@ private fun AuditScreen(vm: NoriViewModel) {
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ChatScreen(vm: NoriViewModel) {
+    var input by remember { mutableStateOf("") }
+    var messages by remember {
+        mutableStateOf(listOf("Nori" to "I can route a few common requests. This is a transparent rule-based demo, not an LLM."))
+    }
+    Column(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text("Talk to Nori", style = MaterialTheme.typography.headlineSmall)
+        Text("Messages are held in this screen state only; persistent conversation memory is not enabled.")
+        LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(messages.size) { index ->
+                val (speaker, body) = messages[index]
+                Card(Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(12.dp)) {
+                        Text(speaker, style = MaterialTheme.typography.labelLarge)
+                        Text(body)
+                    }
+                }
+            }
+        }
+        OutlinedTextField(
+            value = input,
+            onValueChange = { input = it },
+            label = { Text("Message") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = {
+                val sent = input.trim()
+                if (sent.isNotEmpty()) {
+                    messages = messages + ("You" to sent) + ("Nori" to vm.reply(sent))
+                    input = ""
+                }
+            },
+            enabled = input.isNotBlank(),
+            modifier = Modifier.fillMaxWidth()
+        ) { Text("Send") }
     }
 }
