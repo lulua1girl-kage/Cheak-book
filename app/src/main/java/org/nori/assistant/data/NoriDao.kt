@@ -35,4 +35,13 @@ interface NoriDao {
 
     @Update
     suspend fun updateAudit(item: AuditRecord)
+
+    @Query("SELECT * FROM chat_messages ORDER BY createdAt ASC, id ASC")
+    fun observeChatMessages(): Flow<List<ChatMessage>>
+
+    @Insert
+    suspend fun addChatMessage(item: ChatMessage)
+
+    @Query("DELETE FROM chat_messages")
+    suspend fun clearChatMessages()
 }
