@@ -1,0 +1,68 @@
+{"text":"hi","intent":"GREETING"}
+{"text":"hello","intent":"GREETING"}
+{"text":"good morning","intent":"GREETING"}
+{"text":"good evening","intent":"GREETING"}
+{"text":"hey there","intent":"GREETING"}
+{"text":"hello nori","intent":"GREETING"}
+{"text":"good afternoon","intent":"GREETING"}
+{"text":"greetings","intent":"GREETING"}
+{"text":"are you there","intent":"GREETING"}
+{"text":"morning nori","intent":"GREETING"}
+{"text":"hi assistant","intent":"GREETING"}
+{"text":"how are you","intent":"GREETING"}
+{"text":"help me study chemistry","intent":"STUDY_HELP"}
+{"text":"explain derivatives","intent":"STUDY_HELP"}
+{"text":"quiz me on biology","intent":"STUDY_HELP"}
+{"text":"I need to revise physics","intent":"STUDY_HELP"}
+{"text":"teach me acids and bases","intent":"STUDY_HELP"}
+{"text":"solve this math problem","intent":"STUDY_HELP"}
+{"text":"check my solution","intent":"STUDY_HELP"}
+{"text":"give me a hint for chemistry","intent":"STUDY_HELP"}
+{"text":"test my understanding","intent":"STUDY_HELP"}
+{"text":"help with science homework","intent":"STUDY_HELP"}
+{"text":"review chapter three with me","intent":"STUDY_HELP"}
+{"text":"explain this concept","intent":"STUDY_HELP"}
+{"text":"add a task","intent":"TASK_MANAGEMENT"}
+{"text":"what tasks are pending","intent":"TASK_MANAGEMENT"}
+{"text":"plan my afternoon","intent":"TASK_MANAGEMENT"}
+{"text":"schedule a study session","intent":"TASK_MANAGEMENT"}
+{"text":"remind me about assignment","intent":"TASK_MANAGEMENT"}
+{"text":"show my deadlines","intent":"TASK_MANAGEMENT"}
+{"text":"mark this task complete","intent":"TASK_MANAGEMENT"}
+{"text":"organize my homework list","intent":"TASK_MANAGEMENT"}
+{"text":"make a weekly plan","intent":"TASK_MANAGEMENT"}
+{"text":"create a study schedule","intent":"TASK_MANAGEMENT"}
+{"text":"what should I do next","intent":"TASK_MANAGEMENT"}
+{"text":"add homework to my list","intent":"TASK_MANAGEMENT"}
+{"text":"daily check in","intent":"CHECK_IN"}
+{"text":"I slept eight hours","intent":"CHECK_IN"}
+{"text":"my energy is low","intent":"CHECK_IN"}
+{"text":"I feel tired today","intent":"CHECK_IN"}
+{"text":"record my condition","intent":"CHECK_IN"}
+{"text":"I am feeling okay","intent":"CHECK_IN"}
+{"text":"how is my recovery","intent":"CHECK_IN"}
+{"text":"check my energy","intent":"CHECK_IN"}
+{"text":"I feel unwell","intent":"CHECK_IN"}
+{"text":"log my sleep","intent":"CHECK_IN"}
+{"text":"I have low energy","intent":"CHECK_IN"}
+{"text":"how am I feeling today","intent":"CHECK_IN"}
+{"text":"remember this note","intent":"MEMORY"}
+{"text":"what did I save","intent":"MEMORY"}
+{"text":"show my memory","intent":"MEMORY"}
+{"text":"clear chat history","intent":"MEMORY"}
+{"text":"what do you remember","intent":"MEMORY"}
+{"text":"save this information","intent":"MEMORY"}
+{"text":"delete conversation history","intent":"MEMORY"}
+{"text":"find a saved note","intent":"MEMORY"}
+{"text":"retrieve my previous note","intent":"MEMORY"}
+{"text":"do you remember my task","intent":"MEMORY"}
+{"text":"store this preference","intent":"MEMORY"}
+{"text":"forget this chat","intent":"MEMORY"}
+{"text":"clear my conversation","intent":"MEMORY"}
+{"text":"erase my chat log","intent":"MEMORY"}
+{"text":"remove saved messages","intent":"MEMORY"}
+{"text":"delete the chat history","intent":"MEMORY"}
+{"text":"what information have you stored","intent":"MEMORY"}
+{"text":"retrieve something I asked you to remember","intent":"MEMORY"}
+{"text":"save this for later","intent":"MEMORY"}
+{"text":"show my stored notes","intent":"MEMORY"}
