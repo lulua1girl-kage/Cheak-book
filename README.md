@@ -14,12 +14,12 @@ This repository is being built in verified stages. The first milestone is a work
 ## Current milestone
 
 - [x] Repository initialized
-- [ ] Android build scaffold
-- [ ] Persistent local records
-- [ ] Daily check-in and task screens
-- [ ] Evidence-based audit
-- [ ] Tests and CI build
-- [ ] Language understanding
+- [x] Android build scaffold
+- [x] Persistent local records
+- [x] Daily check-in and task screens
+- [x] Evidence-based audit
+- [ ] Tests and CI build (first CI attempt exposed an SDK setup issue; fix committed)
+- [x] Rule-based baseline only; trained ML still pending
 - [ ] Speech input/output
 - [ ] On-device language model evaluation
 
