@@ -189,7 +189,11 @@ private fun AuditScreen(vm: NoriViewModel) {
                             Text(if (item.evidence.isBlank()) "No evidence supplied" else item.evidence)
                             Text(if (item.isVerified) "Verified" else "Unverified")
                         }
-                        Checkbox(checked = item.isVerified, onCheckedChange = { vm.verifyAudit(item, it) })
+                        Checkbox(
+                            checked = item.isVerified,
+                            onCheckedChange = { vm.verifyAudit(item, it) },
+                            enabled = item.evidence.isNotBlank() || item.isVerified
+                        )
                     }
                 }
             }
