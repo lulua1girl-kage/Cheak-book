@@ -46,12 +46,21 @@ import org.nori.assistant.voice.AndroidVoiceController
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { MaterialTheme { NoriRoot() } }
+        setContent {
+            MaterialTheme {
+                val destination = when (intent.getStringExtra("open_screen")) {
+                    "CHECK_IN" -> Screen.CHECK_IN
+                    "PROGRESS" -> Screen.PROGRESS
+                    else -> Screen.HOME
+                }
+                NoriRoot(initialScreen = destination)
+            }
+        }
     }
 }
 
 private enum class Screen(val label: String) {
-    HOME("Home"), CHECK_IN("Check-in"), TASKS("Tasks"), AUDIT("Audit"), CHAT("Nori")
+    HOME("Home"), CHECK_IN("Check-in"), TASKS("Tasks"), AUDIT("Audit"), CHAT("Nori"), PROGRESS("Progress")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,7 +88,7 @@ private fun NoriRoot(vm: NoriViewModel = viewModel()) {
                 Screen.CHECK_IN -> CheckInScreen(vm)
                 Screen.TASKS -> TasksScreen(vm)
                 Screen.AUDIT -> AuditScreen(vm)
-                Screen.CHAT -> ChatScreen(vm)
+                Screen.CHAT -> ChatScreen(vm)\n                Screen.PROGRESS -> ProgressScreen(vm)
             }
         }
     }

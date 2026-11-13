@@ -45,3 +45,33 @@ interface NoriDao {
     @Query("DELETE FROM chat_messages")
     suspend fun clearChatMessages()
 }
+
+
+    // Merit, streak and schedule persistence
+    @Query("SELECT * FROM tasks WHERE dueDate = :date ORDER BY createdAt ASC")
+    suspend fun getTasksForDate(date: String): List<NoriTask>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addDailyCompletion(item: DailyCompletion): Long
+
+    @Query("SELECT date FROM daily_completions ORDER BY date DESC")
+    suspend fun getCompletionDates(): List<String>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addMeritAward(item: MeritAward): Long
+
+    @Query("SELECT * FROM merit_awards ORDER BY earnedAt DESC")
+    fun observeMeritAwards(): Flow<List<MeritAward>>
+
+    @Query("SELECT * FROM nori_schedules ORDER BY id ASC")
+    fun observeSchedules(): Flow<List<NoriSchedule>>
+
+    @Query("SELECT * FROM nori_schedules WHERE kind = :kind LIMIT 1")
+    suspend fun getSchedule(kind: String): NoriSchedule?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveSchedule(item: NoriSchedule)
+
+    @Query("SELECT * FROM daily_completions ORDER BY date DESC")
+    fun observeDailyCompletions(): Flow<List<DailyCompletion>>
+}

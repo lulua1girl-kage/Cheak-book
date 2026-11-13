@@ -16,3 +16,15 @@ class NoriRepository(private val dao: NoriDao) {
     suspend fun addChatMessage(item: ChatMessage) = dao.addChatMessage(item)
     suspend fun clearChatMessages() = dao.clearChatMessages()
 }
+
+
+    suspend fun tasksForDate(date: String) = dao.getTasksForDate(date)
+    suspend fun addDailyCompletion(item: DailyCompletion) = dao.addDailyCompletion(item)
+    suspend fun completionDates() = dao.getCompletionDates()
+    suspend fun addMeritAward(item: MeritAward) = dao.addMeritAward(item)
+    val meritAwards = dao.observeMeritAwards()
+    val schedules = dao.observeSchedules()
+    val dailyCompletions = dao.observeDailyCompletions()
+    suspend fun schedule(kind: String) = dao.getSchedule(kind)
+    suspend fun saveSchedule(item: NoriSchedule) = dao.saveSchedule(item)
+}
