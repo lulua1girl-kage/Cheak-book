@@ -10,6 +10,8 @@ import org.nori.assistant.data.NoriRepository
 import org.nori.assistant.data.NoriTask
 import org.nori.assistant.data.ChatMessage
 import org.nori.assistant.brain.AssistantResponseEngine
+import org.nori.assistant.brain.IntentClassifier
+import org.nori.assistant.brain.TrainedIntentModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -19,7 +21,12 @@ import java.util.Locale
 
 class NoriViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = NoriRepository(NoriDatabase.getInstance(application).noriDao())
-    private val responseEngine = AssistantResponseEngine()
+    private val trainedIntentModel = runCatching {
+        application.assets.open("intent_model.json").bufferedReader().use { reader ->
+            TrainedIntentModel.fromJson(reader.readText())
+        }
+    }.getOrNull()
+    private val responseEngine = AssistantResponseEngine(IntentClassifier(trainedIntentModel))
 
     fun reply(message: String): String = responseEngine.respond(message)
 
