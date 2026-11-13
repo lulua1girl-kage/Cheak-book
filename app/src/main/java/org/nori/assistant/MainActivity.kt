@@ -88,7 +88,8 @@ private fun NoriRoot(vm: NoriViewModel = viewModel()) {
                 Screen.CHECK_IN -> CheckInScreen(vm)
                 Screen.TASKS -> TasksScreen(vm)
                 Screen.AUDIT -> AuditScreen(vm)
-                Screen.CHAT -> ChatScreen(vm)\n                Screen.PROGRESS -> ProgressScreen(vm)
+                Screen.CHAT -> ChatScreen(vm)
+                Screen.PROGRESS -> ProgressScreen(vm)
             }
         }
     }
