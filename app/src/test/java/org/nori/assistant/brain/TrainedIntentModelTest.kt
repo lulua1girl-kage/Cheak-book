@@ -4,25 +4,21 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class TrainedIntentModelTest {
-    private val model = TrainedIntentModel.fromJson(
-        """
-        {
-          "model_version": 1,
-          "algorithm": "multinomial_naive_bayes",
-          "language": "en",
-          "classes": ["GREETING", "STUDY_HELP"],
-          "vocabulary": ["hello", "study", "chemistry"],
-          "log_priors": {"GREETING": -0.69, "STUDY_HELP": -0.69},
-          "log_likelihoods": {
-            "GREETING": {"hello": -0.1, "study": -2.0, "chemistry": -2.0},
-            "STUDY_HELP": {"hello": -2.0, "study": -0.1, "chemistry": -0.1}
-          },
-          "single_token_overrides": {"hello": "GREETING"},
-          "min_known_tokens": 2,
-          "confidence_threshold": 0.5,
-          "margin_threshold": 0.1
-        }
-        """.trimIndent()
+    private val model = TrainedIntentModel(
+        classes = listOf(NoriIntent.GREETING, NoriIntent.STUDY_HELP),
+        vocabulary = setOf("hello", "study", "chemistry"),
+        logPriors = mapOf(
+            NoriIntent.GREETING to -0.69,
+            NoriIntent.STUDY_HELP to -0.69
+        ),
+        logLikelihoods = mapOf(
+            NoriIntent.GREETING to mapOf("hello" to -0.1, "study" to -2.0, "chemistry" to -2.0),
+            NoriIntent.STUDY_HELP to mapOf("hello" to -2.0, "study" to -0.1, "chemistry" to -0.1)
+        ),
+        singleTokenOverrides = mapOf("hello" to NoriIntent.GREETING),
+        minKnownTokens = 2,
+        confidenceThreshold = 0.5,
+        marginThreshold = 0.1
     )
 
     @Test fun exactSingleWordUsesExplicitOverride() {
