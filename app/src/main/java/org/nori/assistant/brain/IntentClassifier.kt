@@ -22,7 +22,7 @@ class IntentClassifier {
         if (normalized.isBlank()) return IntentResult(NoriIntent.UNKNOWN, 0f)
         val matches = patterns.flatMap { (intent, terms) ->
             terms.filter { term ->
-                Regex("(^|[^\\\\p{L}\\\\p{N}])" + Regex.escape(term) + "($|[^\\\\p{L}\\\\p{N}])")
+                Regex("(^|[^A-Za-z0-9])" + Regex.escape(term) + "($|[^A-Za-z0-9])")
                     .containsMatchIn(normalized)
             }.map { intent to it }
         }
