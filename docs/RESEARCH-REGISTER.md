@@ -32,7 +32,7 @@ Do not count a project as open source without checking its actual license. Do no
 
 ## Known reference links
 
-- OpenJarvis: https://github.com/stanford-oval/storm
+- OpenJarvis: https://github.com/open-jarvis/OpenJarvis
 - llama.cpp: https://github.com/ggml-org/llama.cpp
 - LiteRT: https://ai.google.dev/edge/litert
 - Android architecture: https://developer.android.com/topic/architecture
