@@ -11,4 +11,8 @@ class NoriRepository(private val dao: NoriDao) {
     suspend fun deleteTask(id: Long) = dao.deleteTask(id)
     suspend fun addAudit(item: AuditRecord) = dao.addAudit(item)
     suspend fun updateAudit(item: AuditRecord) = dao.updateAudit(item)
+
+    val chatMessages = dao.observeChatMessages()
+    suspend fun addChatMessage(item: ChatMessage) = dao.addChatMessage(item)
+    suspend fun clearChatMessages() = dao.clearChatMessages()
 }
