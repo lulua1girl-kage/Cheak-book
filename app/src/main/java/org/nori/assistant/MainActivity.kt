@@ -65,8 +65,8 @@ private enum class Screen(val label: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun NoriRoot(vm: NoriViewModel = viewModel()) {
-    var screen by remember { mutableStateOf(Screen.HOME) }
+private fun NoriRoot(initialScreen: Screen = Screen.HOME, vm: NoriViewModel = viewModel()) {
+    var screen by remember { mutableStateOf(initialScreen) }
     Scaffold(
         topBar = { TopAppBar(title = { Text("Nori") }) },
         bottomBar = {
