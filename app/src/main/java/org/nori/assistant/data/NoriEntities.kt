@@ -40,3 +40,32 @@ data class ChatMessage(
     val content: String,
     val createdAt: Long = System.currentTimeMillis()
 )
+
+
+@Entity(tableName = "merit_awards", indices = [androidx.room.Index(value = ["awardKey"], unique = true)])
+data class MeritAward(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val awardKey: String,
+    val title: String,
+    val description: String,
+    val points: Int,
+    val earnedAt: Long = System.currentTimeMillis()
+)
+
+@Entity(tableName = "daily_completions", indices = [androidx.room.Index(value = ["date"], unique = true)])
+data class DailyCompletion(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val date: String,
+    val completedAt: Long = System.currentTimeMillis()
+)
+
+@Entity(tableName = "nori_schedules", indices = [androidx.room.Index(value = ["kind"], unique = true)])
+data class NoriSchedule(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val kind: String,
+    val title: String,
+    val hour: Int,
+    val minute: Int,
+    val dayOfWeek: Int,
+    val enabled: Boolean = false
+)

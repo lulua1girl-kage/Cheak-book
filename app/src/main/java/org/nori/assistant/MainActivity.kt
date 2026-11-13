@@ -46,18 +46,27 @@ import org.nori.assistant.voice.AndroidVoiceController
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { MaterialTheme { NoriRoot() } }
+        setContent {
+            MaterialTheme {
+                val destination = when (intent.getStringExtra("open_screen")) {
+                    "CHECK_IN" -> Screen.CHECK_IN
+                    "PROGRESS" -> Screen.PROGRESS
+                    else -> Screen.HOME
+                }
+                NoriRoot(initialScreen = destination)
+            }
+        }
     }
 }
 
 private enum class Screen(val label: String) {
-    HOME("Home"), CHECK_IN("Check-in"), TASKS("Tasks"), AUDIT("Audit"), CHAT("Nori")
+    HOME("Home"), CHECK_IN("Check-in"), TASKS("Tasks"), AUDIT("Audit"), CHAT("Nori"), PROGRESS("Progress")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun NoriRoot(vm: NoriViewModel = viewModel()) {
-    var screen by remember { mutableStateOf(Screen.HOME) }
+private fun NoriRoot(initialScreen: Screen = Screen.HOME, vm: NoriViewModel = viewModel()) {
+    var screen by remember { mutableStateOf(initialScreen) }
     Scaffold(
         topBar = { TopAppBar(title = { Text("Nori") }) },
         bottomBar = {
@@ -80,6 +89,7 @@ private fun NoriRoot(vm: NoriViewModel = viewModel()) {
                 Screen.TASKS -> TasksScreen(vm)
                 Screen.AUDIT -> AuditScreen(vm)
                 Screen.CHAT -> ChatScreen(vm)
+                Screen.PROGRESS -> ProgressScreen(vm)
             }
         }
     }
