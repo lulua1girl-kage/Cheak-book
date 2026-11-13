@@ -61,6 +61,7 @@ class NoriViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun verifyAudit(item: AuditRecord, verified: Boolean) {
+        if (verified && item.evidence.isBlank()) return
         viewModelScope.launch { repository.updateAudit(item.copy(isVerified = verified)) }
     }
 }
