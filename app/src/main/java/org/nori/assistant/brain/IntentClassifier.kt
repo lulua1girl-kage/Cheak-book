@@ -1,14 +1,15 @@
 package org.nori.assistant.brain
 
 /**
- * A transparent baseline router, not a machine-learning model.
- * Unknown or ambiguous requests stay unknown instead of triggering a guessed action.
+ * Uses the trained local model when it is available; otherwise uses a transparent rules fallback.
  */
 enum class NoriIntent { GREETING, STUDY_HELP, TASK_MANAGEMENT, CHECK_IN, MEMORY, UNKNOWN }
 
 data class IntentResult(val intent: NoriIntent, val confidence: Float, val matchedTerm: String? = null)
 
-class IntentClassifier {
+class IntentClassifier(
+    private val trainedModel: TrainedIntentModel? = null
+) {
     private val patterns = linkedMapOf(
         NoriIntent.GREETING to listOf("hello", "hi", "good morning", "good evening"),
         NoriIntent.STUDY_HELP to listOf("study", "revise", "revision", "chemistry", "math", "physics", "biology", "explain"),
@@ -18,6 +19,8 @@ class IntentClassifier {
     )
 
     fun classify(message: String): IntentResult {
+        if (trainedModel != null) return trainedModel.classify(message)
+
         val normalized = message.trim().lowercase()
         if (normalized.isBlank()) return IntentResult(NoriIntent.UNKNOWN, 0f)
         val matches = patterns.flatMap { (intent, terms) ->
