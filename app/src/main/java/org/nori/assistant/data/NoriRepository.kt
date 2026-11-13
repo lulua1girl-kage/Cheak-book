@@ -15,8 +15,6 @@ class NoriRepository(private val dao: NoriDao) {
     val chatMessages = dao.observeChatMessages()
     suspend fun addChatMessage(item: ChatMessage) = dao.addChatMessage(item)
     suspend fun clearChatMessages() = dao.clearChatMessages()
-}
-
 
     suspend fun tasksForDate(date: String) = dao.getTasksForDate(date)
     suspend fun addDailyCompletion(item: DailyCompletion) = dao.addDailyCompletion(item)

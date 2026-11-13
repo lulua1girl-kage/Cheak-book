@@ -65,8 +65,8 @@ private enum class Screen(val label: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun NoriRoot(vm: NoriViewModel = viewModel()) {
-    var screen by remember { mutableStateOf(Screen.HOME) }
+private fun NoriRoot(initialScreen: Screen = Screen.HOME, vm: NoriViewModel = viewModel()) {
+    var screen by remember { mutableStateOf(initialScreen) }
     Scaffold(
         topBar = { TopAppBar(title = { Text("Nori") }) },
         bottomBar = {
@@ -88,7 +88,8 @@ private fun NoriRoot(vm: NoriViewModel = viewModel()) {
                 Screen.CHECK_IN -> CheckInScreen(vm)
                 Screen.TASKS -> TasksScreen(vm)
                 Screen.AUDIT -> AuditScreen(vm)
-                Screen.CHAT -> ChatScreen(vm)\n                Screen.PROGRESS -> ProgressScreen(vm)
+                Screen.CHAT -> ChatScreen(vm)
+                Screen.PROGRESS -> ProgressScreen(vm)
             }
         }
     }

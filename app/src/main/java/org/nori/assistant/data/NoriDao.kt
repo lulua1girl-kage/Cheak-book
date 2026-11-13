@@ -44,10 +44,7 @@ interface NoriDao {
 
     @Query("DELETE FROM chat_messages")
     suspend fun clearChatMessages()
-}
 
-
-    // Merit, streak and schedule persistence
     @Query("SELECT * FROM tasks WHERE dueDate = :date ORDER BY createdAt ASC")
     suspend fun getTasksForDate(date: String): List<NoriTask>
 
