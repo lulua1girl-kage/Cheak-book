@@ -8,6 +8,7 @@ import org.nori.assistant.data.DailyCheckIn
 import org.nori.assistant.data.NoriDatabase
 import org.nori.assistant.data.NoriRepository
 import org.nori.assistant.data.NoriTask
+import org.nori.assistant.brain.AssistantResponseEngine
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -17,6 +18,9 @@ import java.util.Locale
 
 class NoriViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = NoriRepository(NoriDatabase.getInstance(application).noriDao())
+    private val responseEngine = AssistantResponseEngine()
+
+    fun reply(message: String): String = responseEngine.respond(message)
 
     val checkIns = repository.checkIns.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
     val tasks = repository.tasks.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
