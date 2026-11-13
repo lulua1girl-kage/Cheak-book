@@ -19,13 +19,13 @@ This repository is being built in verified stages. Structured records, local cha
 - [x] Daily check-in and task screens
 - [x] Evidence-based audit
 - [ ] Full CI build and tests passing
-- [x] Rule-based baseline only; trained ML still pending
+- [x] Trained small Naive Bayes intent router with deterministic fallback (not an LLM)
 - [x] Optional push-to-talk input and spoken replies (device support dependent)
-- [ ] On-device language model evaluation
+- [ ] On-device generative language model evaluation
 
 ## Build
 
-Open the project in Android Studio (Hedgehog or newer) and sync Gradle. The project uses JDK 17.
+Open the project in Android Studio (Hedgehog or newer) and sync Gradle. The project uses JDK 17. Before a local Android build, generate the small intent model with `python ml/train_intent_model.py` (Python 3.9+; standard library only). GitHub Actions performs this step automatically.
 
 A GitHub Actions workflow will build the debug APK and attach it to successful workflow runs once the Android project scaffold is committed.
 
