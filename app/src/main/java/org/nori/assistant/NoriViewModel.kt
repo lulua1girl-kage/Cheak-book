@@ -8,6 +8,7 @@ import org.nori.assistant.data.DailyCheckIn
 import org.nori.assistant.data.NoriDatabase
 import org.nori.assistant.data.NoriRepository
 import org.nori.assistant.data.NoriTask
+import org.nori.assistant.data.ChatMessage
 import org.nori.assistant.brain.AssistantResponseEngine
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -25,6 +26,7 @@ class NoriViewModel(application: Application) : AndroidViewModel(application) {
     val checkIns = repository.checkIns.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
     val tasks = repository.tasks.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
     val audits = repository.audits.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val chatMessages = repository.chatMessages.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     fun saveCheckIn(sleep: Float, energy: String, condition: String, note: String) {
         viewModelScope.launch {
@@ -63,5 +65,19 @@ class NoriViewModel(application: Application) : AndroidViewModel(application) {
     fun verifyAudit(item: AuditRecord, verified: Boolean) {
         if (verified && item.evidence.isBlank()) return
         viewModelScope.launch { repository.updateAudit(item.copy(isVerified = verified)) }
+    }
+
+    fun sendMessage(message: String) {
+        val clean = message.trim()
+        if (clean.isBlank()) return
+        viewModelScope.launch {
+            repository.addChatMessage(ChatMessage(role = "You", content = clean))
+            val response = responseEngine.respond(clean)
+            repository.addChatMessage(ChatMessage(role = "Nori", content = response))
+        }
+    }
+
+    fun clearChatHistory() {
+        viewModelScope.launch { repository.clearChatMessages() }
     }
 }
