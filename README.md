@@ -9,7 +9,7 @@ A local-first Android personal assistant focused on academic planning, daily che
 **Architecture:** Native Android / Kotlin / Jetpack Compose / Room  
 **Privacy default:** Core records and conversation history stay on-device. No AI API key or cloud account is required.
 
-This repository is being built in verified stages. The first milestone is a working offline foundation; language intelligence and voice are separate milestones.
+This repository is being built in verified stages. Structured records, local chat history and the first optional voice adapter are in the foundation build. A trained classifier and generative language model remain separate milestones.
 
 ## Current milestone
 
