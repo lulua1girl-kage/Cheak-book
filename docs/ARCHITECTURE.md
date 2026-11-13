@@ -14,7 +14,7 @@ Room DAO
 nori-local.db (device-local)
 ```
 
-The current code has Room entities and DAO flows for daily check-ins, tasks and audit records. The UI observes those flows and writes through the ViewModel. The baseline intent classifier is a transparent keyword router; it is not machine learning and must not be represented as an LLM.
+The current code has Room entities and DAO flows for daily check-ins, tasks, audit records and chat history. Conversation history is stored locally and can be cleared from the chat screen. The baseline intent classifier is a transparent keyword router; it is not machine learning and must not be represented as an LLM.
 
 ## Planned intelligence pipeline
 
@@ -40,7 +40,7 @@ The system should ask a clarification when intent or entities are ambiguous. A c
 
 - Room is the source of truth for structured records.
 - Core check-in, task and audit flows do not require network access.
-- No INTERNET or RECORD_AUDIO permission is declared in the initial manifest.
+- No INTERNET permission is declared. RECORD_AUDIO is requested only when the user taps Speak; microphone hardware is optional.
 - Model weights, if added, are separate optional assets and are not bundled into the base APK by default.
 - Backups should be user-initiated and clearly explain what is exported.
 
@@ -61,12 +61,12 @@ A small on-device model is optional assistance, not the authority for academic r
 
 ## Voice design
 
-Voice is a separate adapter:
-- Push-to-talk first.
-- Speech-to-text adapter.
-- Shared message pipeline.
-- Text-to-speech adapter.
-- Explicit listening state and microphone permission.
-- Later evaluation of wake-word behavior.
+Voice is a separate Android adapter:
+- User-initiated push-to-talk.
+- Android on-device SpeechRecognizer only; no cloud-recognition fallback.
+- Transcript returns to the same typed-message field and requires the user to press Send.
+- Android TextToSpeech for optional spoken replies.
+- Explicit microphone permission request and listening status.
+- Availability and offline language/voice data depend on installed Android speech services.
 
-Voice errors must not stop typed chat, records or other modules. No always-on microphone is planned for the first voice milestone.
+Voice errors must not stop typed chat, records or other modules. No always-on microphone or wake-word listener is enabled.
