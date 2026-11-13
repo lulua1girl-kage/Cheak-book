@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
@@ -29,6 +30,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
@@ -204,11 +206,10 @@ private fun AuditScreen(vm: NoriViewModel) {
 @Composable
 private fun ChatScreen(vm: NoriViewModel) {
     var input by remember { mutableStateOf("") }
-    var lastReply by remember { mutableStateOf("") }
     var voiceStatus by remember { mutableStateOf("Voice is optional. Typed chat always remains available.") }
-    var messages by remember {
-        mutableStateOf(listOf("Nori" to "I can route a few common requests. This is a transparent rule-based demo, not an LLM."))
-    }
+    var showClearConfirmation by remember { mutableStateOf(false) }
+    val messages by vm.chatMessages.collectAsStateWithLifecycle()
+    val lastReply = messages.lastOrNull { it.role == "Nori" }?.content.orEmpty()
     val context = LocalContext.current
     val voiceController = remember(context) {
         AndroidVoiceController(
@@ -245,16 +246,40 @@ private fun ChatScreen(vm: NoriViewModel) {
         }
     }
 
+    if (showClearConfirmation) {
+        AlertDialog(
+            onDismissRequest = { showClearConfirmation = false },
+            title = { Text("Clear conversation history?") },
+            text = { Text("This permanently clears the locally saved Nori chat on this device. It does not delete check-ins, tasks or audit records.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    vm.clearChatHistory()
+                    showClearConfirmation = false
+                }) { Text("Clear history") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showClearConfirmation = false }) { Text("Cancel") }
+            }
+        )
+    }
+
     Column(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Text("Talk to Nori", style = MaterialTheme.typography.headlineSmall)
-        Text("Messages are held in this screen state only; persistent conversation memory is not enabled.")
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text("Talk to Nori", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.weight(1f))
+            TextButton(onClick = { showClearConfirmation = true }, enabled = messages.isNotEmpty()) {
+                Text("Clear chat")
+            }
+        }
+        Text("Conversation history is saved locally on this device. You can clear it at any time.")
         LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(messages.size) { index ->
-                val (speaker, body) = messages[index]
+            if (messages.isEmpty()) {
+                item { Text("No saved messages yet. Start a conversation below.") }
+            }
+            items(messages, key = { it.id }) { message ->
                 Card(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(12.dp)) {
-                        Text(speaker, style = MaterialTheme.typography.labelLarge)
-                        Text(body)
+                        Text(message.role, style = MaterialTheme.typography.labelLarge)
+                        Text(message.content)
                     }
                 }
             }
@@ -279,13 +304,8 @@ private fun ChatScreen(vm: NoriViewModel) {
         }
         Button(
             onClick = {
-                val sent = input.trim()
-                if (sent.isNotEmpty()) {
-                    val reply = vm.reply(sent)
-                    messages = messages + ("You" to sent) + ("Nori" to reply)
-                    lastReply = reply
-                    input = ""
-                }
+                vm.sendMessage(input)
+                input = ""
             },
             enabled = input.isNotBlank(),
             modifier = Modifier.fillMaxWidth()
