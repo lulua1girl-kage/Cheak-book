@@ -66,3 +66,19 @@
 {"text":"retrieve something I asked you to remember","intent":"MEMORY"}
 {"text":"save this for later","intent":"MEMORY"}
 {"text":"show my stored notes","intent":"MEMORY"}
+{"text":"do something unusual","intent":"UNKNOWN"}
+{"text":"maybe later","intent":"UNKNOWN"}
+{"text":"blah blah","intent":"UNKNOWN"}
+{"text":"tell me a joke","intent":"UNKNOWN"}
+{"text":"what is the capital of france","intent":"UNKNOWN"}
+{"text":"write a poem about rain","intent":"UNKNOWN"}
+{"text":"what time is it now","intent":"UNKNOWN"}
+{"text":"the sky looks blue today","intent":"UNKNOWN"}
+{"text":"how does a refrigerator work","intent":"UNKNOWN"}
+{"text":"random words here","intent":"UNKNOWN"}
+{"text":"I like music","intent":"UNKNOWN"}
+{"text":"can you draw a tree","intent":"UNKNOWN"}
+{"text":"what is two plus two","intent":"UNKNOWN"}
+{"text":"where can I find a movie","intent":"UNKNOWN"}
+{"text":"good night","intent":"UNKNOWN"}
+{"text":"what is the weather","intent":"UNKNOWN"}
