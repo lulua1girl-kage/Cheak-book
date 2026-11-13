@@ -1,8 +1,14 @@
 package org.nori.assistant
 
 import android.os.Bundle
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,9 +35,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.nori.assistant.data.NoriTask
+import org.nori.assistant.voice.AndroidVoiceController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -192,9 +200,47 @@ private fun AuditScreen(vm: NoriViewModel) {
 @Composable
 private fun ChatScreen(vm: NoriViewModel) {
     var input by remember { mutableStateOf("") }
+    var lastReply by remember { mutableStateOf("") }
+    var voiceStatus by remember { mutableStateOf("Voice is optional. Typed chat always remains available.") }
     var messages by remember {
         mutableStateOf(listOf("Nori" to "I can route a few common requests. This is a transparent rule-based demo, not an LLM."))
     }
+    val context = LocalContext.current
+    val voiceController = remember(context) {
+        AndroidVoiceController(
+            context = context,
+            onTranscript = { transcript -> input = transcript },
+            onStatus = { status -> voiceStatus = status }
+        )
+    }
+    DisposableEffect(voiceController) {
+        onDispose { voiceController.release() }
+    }
+    val microphonePermission = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            voiceController.startListening()
+        } else {
+            voiceStatus = "Microphone permission was not granted. You can continue typing."
+        }
+    }
+
+    fun beginVoiceInput() {
+        if (!voiceController.supportsOnDeviceRecognition()) {
+            voiceStatus = "This device has no available on-device speech recognizer. Typed chat still works."
+            return
+        }
+        val permissionGranted = Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+            ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) ==
+            PackageManager.PERMISSION_GRANTED
+        if (permissionGranted) {
+            voiceController.startListening()
+        } else {
+            microphonePermission.launch(Manifest.permission.RECORD_AUDIO)
+        }
+    }
+
     Column(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text("Talk to Nori", style = MaterialTheme.typography.headlineSmall)
         Text("Messages are held in this screen state only; persistent conversation memory is not enabled.")
@@ -209,17 +255,31 @@ private fun ChatScreen(vm: NoriViewModel) {
                 }
             }
         }
+        Text(voiceStatus, style = MaterialTheme.typography.bodySmall)
         OutlinedTextField(
             value = input,
             onValueChange = { input = it },
-            label = { Text("Message") },
+            label = { Text("Message or recognized speech") },
             modifier = Modifier.fillMaxWidth()
         )
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button(
+                onClick = ::beginVoiceInput,
+                modifier = Modifier.weight(1f)
+            ) { Text("Speak") }
+            Button(
+                onClick = { voiceController.speak(lastReply) },
+                enabled = lastReply.isNotBlank(),
+                modifier = Modifier.weight(1f)
+            ) { Text("Read reply") }
+        }
         Button(
             onClick = {
                 val sent = input.trim()
                 if (sent.isNotEmpty()) {
-                    messages = messages + ("You" to sent) + ("Nori" to vm.reply(sent))
+                    val reply = vm.reply(sent)
+                    messages = messages + ("You" to sent) + ("Nori" to reply)
+                    lastReply = reply
                     input = ""
                 }
             },
