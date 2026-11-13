@@ -7,7 +7,7 @@ import kotlin.math.exp
  * Tiny on-device Multinomial Naive Bayes intent model exported by ml/train_intent_model.py.
  * It is an intent router, not a conversational language model.
  */
-class TrainedIntentModel private constructor(
+class TrainedIntentModel internal constructor(
     private val classes: List<NoriIntent>,
     private val vocabulary: Set<String>,
     private val logPriors: Map<NoriIntent, Double>,
