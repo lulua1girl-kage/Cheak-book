@@ -7,7 +7,7 @@ A local-first Android personal assistant focused on academic planning, daily che
 **Stage:** Foundation build  
 **Current release:** No APK yet  
 **Architecture:** Native Android / Kotlin / Jetpack Compose / Room  
-**Privacy default:** Core records stay on-device. No AI API key or cloud account is required.
+**Privacy default:** Core records and conversation history stay on-device. No AI API key or cloud account is required.
 
 This repository is being built in verified stages. The first milestone is a working offline foundation; language intelligence and voice are separate milestones.
 
@@ -18,9 +18,9 @@ This repository is being built in verified stages. The first milestone is a work
 - [x] Persistent local records
 - [x] Daily check-in and task screens
 - [x] Evidence-based audit
-- [ ] Tests and CI build (first CI attempt exposed an SDK setup issue; fix committed)
+- [ ] Full CI build and tests passing
 - [x] Rule-based baseline only; trained ML still pending
-- [ ] Speech input/output
+- [x] Optional push-to-talk input and spoken replies (device support dependent)
 - [ ] On-device language model evaluation
 
 ## Build
@@ -29,7 +29,7 @@ Open the project in Android Studio (Hedgehog or newer) and sync Gradle. The proj
 
 A GitHub Actions workflow will build the debug APK and attach it to successful workflow runs once the Android project scaffold is committed.
 
-## Principles
+## Voice limitations\n\nSpeech input uses Android's on-device recognizer only; availability and language packs depend on the device. Speech output uses the installed Android TTS engine; offline voices depend on installed voice data. No network speech fallback is enabled.\n\n## Principles
 
 1. Local-first: core records work offline.
 2. Evidence before claims: planned work is not completed work.
