@@ -21,7 +21,10 @@ class IntentClassifier {
         val normalized = message.trim().lowercase()
         if (normalized.isBlank()) return IntentResult(NoriIntent.UNKNOWN, 0f)
         val matches = patterns.flatMap { (intent, terms) ->
-            terms.filter { term -> normalized.contains(term) }.map { intent to it }
+            terms.filter { term ->
+                Regex("(^|[^\\\\p{L}\\\\p{N}])" + Regex.escape(term) + "($|[^\\\\p{L}\\\\p{N}])")
+                    .containsMatchIn(normalized)
+            }.map { intent to it }
         }
         val distinctIntents = matches.map { it.first }.distinct()
         if (distinctIntents.size != 1) return IntentResult(NoriIntent.UNKNOWN, 0.25f)
